@@ -5,5 +5,5 @@ typedef struct{
 
 typedef struct{
 	int dx,dy,length;
-	Point body[1000];
+	Point body[99999];
 } Snake;

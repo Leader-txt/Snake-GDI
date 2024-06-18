@@ -5,11 +5,16 @@
 LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) {
 	switch(Message) {
 		case WM_CREATE:{
-            SetTimer(hwnd, 1, 200, NULL);
+            SetTimer(hwnd, 1, 150, NULL);
 			break;
 		}
         case WM_TIMER:{
-            UpdateGame();
+        	if(gameover){
+        		AfterGameOver(hwnd);
+			}
+			else{
+	            UpdateGame();
+			}
             InvalidateRect(hwnd, NULL, TRUE);
 			break;
 		}
@@ -45,7 +50,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) 
         case WM_PAINT: {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hwnd, &ps);
-            DrawGame(hdc);
+            if(gameover){
+            	DrawGameOver(hdc);
+			}
+			else{
+	            DrawGame(hdc);
+			}
             EndPaint(hwnd, &ps);
             break;
         }
