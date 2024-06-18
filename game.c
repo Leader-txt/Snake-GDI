@@ -22,28 +22,40 @@ void InitGame(){
 	snake.length = 1;
 	snake.dx = snake.dy = 0;
 	if(rand()%2)
-		snake.dx = rand()%3 - 1;
+		snake.dx = rand()%2 ? 1 : - 1;
 	else
-		snake.dy = rand()%3 - 1;
+		snake.dy = rand()%2 ? 1 : - 1;
 	snake.body[0].x = rand()%BLOCKS_X;
 	snake.body[0].y = rand()%BLOCKS_Y;
 	generateFood();
 }
 
-int checkCollision(){
+int checkCollision(Point head){
 	int i;
 	for(i=1;i<snake.length;i++){
-		if(snake.body[0].x == snake.body[i].x && snake.body[0].y == snake.body[i].y)
+		if(head.x == snake.body[i].x && head.y == snake.body[i].y)
 			return 1;
 	}
-	int hx = snake.body[0].x , hy = snake.body[0].y;
+	int hx = head.x , hy = head.y;
 	return hx < 0 || hx >= BLOCKS_X || hy < 0 || hy >= BLOCKS_Y;
 }
 
 void UpdateGame(){
-	snake.body[0].x += snake.dx;
-	snake.body[0].y += snake.dy;
-	
+	Point head = { snake.body[0].x + snake.dx , snake.body[0].y + snake.dy};
+	if(checkCollision(head)){
+		gameOver();
+		return;
+	}
+	if(head.x == food.x && head.y == food.y){
+		snake.length++;
+		generateFood();
+	}
+	int i;
+	for(i = 1;i<snake.length;i++){
+		snake.body[i].x = snake.body[i-1].x;
+		snake.body[i].y = snake.body[i-1].y;
+	}
+	snake.body[0] = head;
 }
 
 void gameOver(){

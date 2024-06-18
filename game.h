@@ -14,3 +14,4 @@ Snake snake;
 Point food;
 
 void InitGame(); 
+void UpdateGame();

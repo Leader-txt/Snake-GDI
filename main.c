@@ -5,7 +5,41 @@
 LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) {
 	switch(Message) {
 		case WM_CREATE:{
-            SetTimer(hwnd, 1, 100, NULL);
+            SetTimer(hwnd, 1, 200, NULL);
+			break;
+		}
+        case WM_TIMER:{
+            UpdateGame();
+            InvalidateRect(hwnd, NULL, TRUE);
+			break;
+		}
+		case WM_KEYDOWN:{
+            switch (wParam) {
+                case VK_UP:
+                    if (snake.dy == 0) {
+                        snake.dx = 0;
+                        snake.dy = -1;
+                    }
+                    break;
+                case VK_DOWN:
+                    if (snake.dy == 0) {
+                        snake.dx = 0;
+                        snake.dy = 1;
+                    }
+                    break;
+                case VK_LEFT:
+                    if (snake.dx == 0) {
+                        snake.dx = -1;
+                        snake.dy = 0;
+                    }
+                    break;
+                case VK_RIGHT:
+                    if (snake.dx == 0) {
+                        snake.dx = 1;
+                        snake.dy = 0;
+                    }
+                    break;
+            }
 			break;
 		}
         case WM_PAINT: {
